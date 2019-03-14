@@ -55,8 +55,8 @@ def page_not_found(e):
 if __name__ == "__main__":
     # Only for debugging while developing
 
-    # app.run(host='0.0.0.0', debug=variables['debug'])
+    app.run(debug=variables['debug'])
     # app.run()
     # app.run(ssl_context='adhoc')
     # app.run(debug=True, ssl_context=('cert.pem', 'key.pem'))
-    app.run(host='0.0.0.0', debug=variables['debug'], ssl_context=('cert.pem', 'key.pem'), port=443)
+    # app.run(host='0.0.0.0', debug=variables['debug'], ssl_context=('cert.pem', 'key.pem'), port=443)
