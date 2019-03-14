@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block header %}
+  <h1>{% block title %} Error - Digitale Brain {% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="content-section container" style="background-image: url({{ url_for('static', filename='images/404.jpg') }})">
+        <p>"Everything’s impossible until somebody does it.” but now... there is an ERROR </p>
+    </div>
+{% endblock content %}
