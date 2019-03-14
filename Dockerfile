@@ -12,7 +12,7 @@ WORKDIR /app/app
 
 RUN pip install -r requirements.txt
 
-EXPOSE 5000
+EXPOSE 443
 
 ENTRYPOINT  ["python3"]
 

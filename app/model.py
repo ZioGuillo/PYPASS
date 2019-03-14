@@ -152,6 +152,8 @@ def reset_passwd(domain, user_admin, passwd_admin, basedn, username, current, ne
                                      text="You password was reset! testing :) not panic :tada:", as_user=True)
 
                 print("Result: ", result['ok'])
+            else:
+                pass
 
         # a new password is set, hashed with sha256 and a random salt
         return True
@@ -161,13 +163,3 @@ def reset_passwd(domain, user_admin, passwd_admin, basedn, username, current, ne
 
 
 # =================================================
-'''
-
-connx = conx(domainx, user_adminx, passwd_adminx)
-
-user_info, user_email = search_userx(user, connx, BASEDNx)
-
-print("final results 1: " + user_info + " Final results 2: " + user_email)
-connx.unbind()
-'''
-print(variables['SLACK_BOT_TOKEN'])
