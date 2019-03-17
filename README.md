@@ -29,12 +29,12 @@ PyPass does not require any configuration, as it obtains the principal context f
 PyPass has the following features:
 
 - Easily localizable
-- Supports [reCAPTCHA](https://www.google.com/recaptcha/intro/index.html) (Next Update)
+- Supports [reCAPTCHA](https://www.google.com/recaptcha/intro/index.html)
 - Has a built-in password meter
 - Responsive design that works on mobiles, tablets, and desktops.
 - Works with Windows/Linux servers.
 
-<img align="center" src="#"></img>
+<img align="center" src="src/screen.png"></img>
 
 ## Installation
 
