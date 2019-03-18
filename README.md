@@ -30,7 +30,6 @@ PyPass has the following features:
 
 - Easily localizable
 - Supports [reCAPTCHA](https://www.google.com/recaptcha/intro/index.html)
-- Has a built-in password meter
 - Responsive design that works on mobiles, tablets, and desktops.
 - Works with Windows/Linux servers.
 
@@ -40,7 +39,8 @@ PyPass has the following features:
 
 *You can easily install using Python3 and Flask. Check the next section to know how.*
 
-*To enable ldap services in the server(Windows) you need to install the Certificate services on the server. [Follow this steps to do it](https://www.watchguard.com/help/docs/ssl/3/en-us/content/en-us/manage_system/active_directory_auth_w-ldap-ssl.html)*
+*To enable ldap services in the server(Windows) you need to install the Certificate services on the server.
+[Follow this steps to do it](https://www.watchguard.com/help/docs/ssl/3/en-us/content/en-us/manage_system/active_directory_auth_w-ldap-ssl.html)*
 
 
 
@@ -80,34 +80,22 @@ This is the Format of the config file:
 ```
 
 
-- To enable The Secret Key in the App:
-  1. Find the `SECRET_KEY_FLASK` entry and enter your private key:
-     To create your personal SECRET_KEY_FLASK In a command promt do the following:
-``` command
->>>python3
-Python 3.7.2
-[Clang 10.0.0 (clang-1000.11.45.5)] on darwin
-Type "help", "copyright", "credits" or "license" for more information.
->>> import secrets
->>> stk = secrets.token_hex(16)
->>> print(stk)
-```
+1.  To enable The Secret Key in the App:
+    Find the `SECRET_KEY_FLASK` entry and enter your private key:
+    To create your personal SECRET_KEY_FLASK In a command promt do the following:
+    ``` command
+    >>>python3
+    Python 3.7.2
+    [Clang 10.0.0 (clang-1000.11.45.5)] on darwin
+    Type "help", "copyright", "credits" or "license" for more information.
+    >>> import secrets
+    >>> stk = secrets.token_hex(16)
+    >>> print(stk)
+    ```
     Copy the code in the entrie.
 
-  2. Find the `SiteKey` entry and enter your Site Key within double quotes (`"`)
-
-  "SECRET_KEY_FLASK": "werewtrwetewrwer53535353",
-  "SLACK_BOT_TOKEN" : "xoxb-",
-  "domain": "",
-  "BASEDN": "OU=Users,dc=domain,dc=com",
-  "user_admin" : "admin-user",
-  "passwd_admin" : "",
-  "slack_db" : "",
-  "Slack_Activation" : "False",
-  "debug": "True",
-  "company": "DIGITALEBRAIN",
-  "RECAPTCHA_PUBLIC_KEY": "",
-  "RECAPTCHA_PRIVATE_KEY": ""
+2.  Find the `SLACK_BOT_TOKEN` entry and enter your Slack Token
+    To get your slack Token [follow this steps](https://get.slack.help/hc/en-us/articles/215770388-Create-and-regenerate-API-tokens) and your Token need to start with *xoxb-*
 
 - To change the language of the reCAPTCHA widget
   - Find the `LanguageCode` entry and enter [one of the options listed here](https://developers.google.com/recaptcha/docs/language). By default this is set to `en`
