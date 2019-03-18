@@ -154,9 +154,6 @@ If you need to modify the source code (either backend or frontend). You require 
 *Note* -
 
 
-```
 ## License
 
-PyPass is open source software and [MIT licensed](https://github.com/ZioGuillo/PYPASS/blob/master/LICENSE). Please star this project if you like it.
-
-```
+PyPass is open source software and [MIT licensed](https://github.com/ZioGuillo/PYPASS/blob/master/LICENSE). *Please star this project if you like it.*
