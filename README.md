@@ -97,12 +97,12 @@ This is the Format of the config file:
 
 3. For the AD Credentials need to have admin priviligies or the user be able to change passwords.
 
-``` json
+    ``` json
     "domain": "domain.com",
     "BASEDN": "OU=Users,dc=domain,dc=com",
     "user_admin" : "admin-user",
     "passwd_admin" : "password_admin",
-  ```
+    ```
 ## Slack
 
 4. To enable and use the slack notification, you need to download the slack DB in a file and put in the same folder *SRC FOLDER* of the config file.
@@ -132,10 +132,10 @@ This is the Format of the config file:
     ``` json
     "RECAPTCHA_PUBLIC_KEY": "GOOGLE CODE",
     "RECAPTCHA_PRIVATE_KEY": "GOOGLE CODE"
-  ```
+    ```
     To get this codes [click in this link](https://developers.google.com/recaptcha/)
 
-- The rest of the configuration entries are all pretty much all UI strings. Change them to localize, or to brand this utility, to meet your needs.
+6.  The rest of the configuration entries are all pretty much all UI strings. Change them to localize, or to brand this utility, to meet your needs.
 
 ## Troubleshooting
 
@@ -157,6 +157,6 @@ If you need to modify the source code (either backend or frontend). You require 
 ```
 ## License
 
-PyPass is open source software and [MIT licensed]. Please star this project if you like it.(LICENSE)
+PyPass is open source software and [MIT licensed](LICENSE). Please star this project if you like it.
 
 ```
