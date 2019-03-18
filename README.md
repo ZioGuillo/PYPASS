@@ -46,9 +46,7 @@ PyPass has the following features:
 
 ## Docker
 
-You can use the Alpine Docker Builder image and then copy the assets over to an Alpine container.
 
-You can pass environment attributes directly into docker without modifying the appsettings.json
 
 ```
 
@@ -66,16 +64,16 @@ This is the Format of the config file:
 {
   "SECRET_KEY_FLASK": "werewtrwetewrwer53535353",
   "SLACK_BOT_TOKEN" : "xoxb-",
-  "domain": "",
+  "domain": "domain.com",
   "BASEDN": "OU=Users,dc=domain,dc=com",
   "user_admin" : "admin-user",
-  "passwd_admin" : "",
-  "slack_db" : "",
+  "passwd_admin" : "password_admin",
+  "slack_db" : "slack_db.json",
   "Slack_Activation" : "False",
   "debug": "True",
   "company": "DIGITALEBRAIN",
-  "RECAPTCHA_PUBLIC_KEY": "",
-  "RECAPTCHA_PRIVATE_KEY": ""
+  "RECAPTCHA_PUBLIC_KEY": "GOOGLE CODE",
+  "RECAPTCHA_PRIVATE_KEY": "GOOGLE CODE"
 }
 ```
 
@@ -97,28 +95,47 @@ This is the Format of the config file:
 2.  Find the `SLACK_BOT_TOKEN` entry and enter your Slack Token
     To get your slack Token [follow this steps](https://get.slack.help/hc/en-us/articles/215770388-Create-and-regenerate-API-tokens) and your Token need to start with *xoxb-*
 
-- To change the language of the reCAPTCHA widget
-  - Find the `LanguageCode` entry and enter [one of the options listed here](https://developers.google.com/recaptcha/docs/language). By default this is set to `en`
-- To enable/disable the password meter
-  - Find the `ShowPasswordMeter` entry and set it to `true` or `false` (without quotes)
-- To enable restricted group checking
-  1. Find the `CheckRestrictedAdGroups` entry and set it to `true` (without quotes)
-  2. Find the `RestrictedADGroups` entry and add any groups that are sensitive.  Accounts in these groups (directly or inherited) will not be able to change their password.
-- Find the `DefaultDomain` entry and set it to your default Active Directory domain. This should eliminate confusion about using e-mail domains / internal domain names. **NOTE:** if you are using a subdomain, and you have errors, please try using your top-level domain. Thank you.
-- To provide an optional paramerter to the URL to set the username text box automatically
-  1. `http://mypasscore.com/?userName=someusername`
-  2. This helps the user incase they forgot thier username and, also comes in handy when sending a link to the application or having it embeded into another application were the user is all ready signed in.
-- To specify which (DC) attribute is used to search for the specific user.
-  - With the `IdTypeForUser` it is possible to select one of six Attributes that will be used to search for the specifiv user.
-  - The possible values are:
-    - `DistinguishedName` or `DN`
-    - `GloballyUniqueIdentifier` or `GUID`
-    - `Name`
-    - `SamAccountName` or `SAM`
-    - `SecurityIdentifier` or `SID`
-    - `UserPrincipalName` or `UPN`
-- The rest of the configuration entries are all pretty much all UI strings. Change them to localize, or to brand this utility, to meet your needs.
+3. For the AD Credentials need to have admin priviligies or the user be able to change passwords.
 
+``` json
+    "domain": "domain.com",
+    "BASEDN": "OU=Users,dc=domain,dc=com",
+    "user_admin" : "admin-user",
+    "passwd_admin" : "password_admin",
+  ```
+## Slack
+
+4. To enable and use the slack notification, you need to download the slack DB in a file and put in the same folder *SRC FOLDER* of the config file.
+    - To Download the Slack DB do the follow.
+    - Create a Python file and put this code:
+
+    ``` python
+    import json
+    from slackclient import SlackClient
+
+    SLACK_BOT_TOKEN = "xoxb-YOUR-TOKEN"
+    data = json.dumps(sc.api_call("users.list"), indent=4, sort_keys=True)
+    print(data)
+    ```
+
+    Once in the command promt line export the results in a JSON file:
+
+    ``` cmd
+    >>>python3 slack_file.py >> slack_db.json
+
+    ```
+    The File have to be in the *src* folder and put the complete name of the file in the entrie ```"slack_db" : "slack_db.json",```
+    Once you have that change the ```"Slack_Activation" : "False"``` to ```True```.
+
+5.  Put the Recaptcha Codes in the entries:
+
+    ``` json
+    "RECAPTCHA_PUBLIC_KEY": "GOOGLE CODE",
+    "RECAPTCHA_PRIVATE_KEY": "GOOGLE CODE"
+  ```
+    To get this codes [click in this link](https://developers.google.com/recaptcha/)
+
+- The rest of the configuration entries are all pretty much all UI strings. Change them to localize, or to brand this utility, to meet your needs.
 
 ## Troubleshooting
 
@@ -131,25 +148,8 @@ This is the Format of the config file:
 
 ## Build your own version
 
-If you need to modify the source code (either backend or frontend). You require Python3 and Flask. Run the following command according to your target platform.
+If you need to modify the source code (either backend or frontend). You require Python3 and Flask.
 
-### Windows
-
-```
-
-```
-
-### Linux (portable)
-
-```
-
-```
-
-### MacOS (OS X)
-
-```
-
-```
 
 *Note* -
 
