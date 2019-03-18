@@ -1,14 +1,14 @@
 {
-  "SECRET_KEY_FLASK": "",
-  "SLACK_BOT_TOKEN" : "",
-  "domain": "",
-  "BASEDN": "",
-  "user_admin" : "",
-  "passwd_admin" : "",
-  "slack_db" : "",
+  "SECRET_KEY_FLASK": "werewtrwetewrwer53535353",
+  "SLACK_BOT_TOKEN" : "xoxb-",
+  "domain": "domain.com",
+  "BASEDN": "OU=Users,dc=domain,dc=com",
+  "user_admin" : "admin-user",
+  "passwd_admin" : "password_admin",
+  "slack_db" : "slack_db.json",
   "Slack_Activation" : "False",
   "debug": "True",
   "company": "DIGITALEBRAIN",
-  "RECAPTCHA_PUBLIC_KEY": "",
-  "RECAPTCHA_PRIVATE_KEY": ""
+  "RECAPTCHA_PUBLIC_KEY": "GOOGLE CODE",
+  "RECAPTCHA_PRIVATE_KEY": "GOOGLE CODE"
 }
