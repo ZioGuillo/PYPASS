@@ -18,7 +18,7 @@
 
 ## Overview
 
-PyPass is a very simple 1-page web application written in [Python](https://www.python.org/), using [Flask](http://flask.pocoo.org/) , [Angular Material](https://material.angular.io/), [Typescript](http://www.typescriptlang.org/), and [Microsoft Directory Services](https://docs.microsoft.com/en-us/dotnet/api/system.directoryservices) (Default provider).
+PyPass is a very simple 1-page web application written in [Python](https://www.python.org/), using [Flask](http://flask.pocoo.org/) , [Angular Material](https://material.angular.io/), [Ldap3](https://ldap3.readthedocs.io/), and [Microsoft Directory Services](https://docs.microsoft.com/en-us/dotnet/api/system.directoryservices) (Default provider).
 
 It allows users to change their Active Directory password on their own, provided the user is not disabled.
 
@@ -38,9 +38,9 @@ PyPass has the following features:
 
 ## Installation
 
-*You can easily install using Powershell. Check the next section to know how.*
+*You can easily install using Python3 and Flask. Check the next section to know how.*
 
-
+*To enable ldap services in the server(Windows) you need to install the Certificate services on the server. [Follow this steps to do it](https://www.watchguard.com/help/docs/ssl/3/en-us/content/en-us/manage_system/active_directory_auth_w-ldap-ssl.html)
 
 ## Docker
 
@@ -51,13 +51,8 @@ You can pass environment attributes directly into docker without modifying the a
 ```
 docker build --rm -t pypass .
 docker run \
--e AppSettings__LdapHostnames__0='ad001.example.com' \
--e AppSettings__LdapHostnames__1='ad002.example.com' \
--e AppSettings__LdapPort='636' \
--e AppSettings__LdapUsername='CN=First Last,OU=Users,DC=example,DC=com' \
--it \
--p 80:80 \
-passcore:latest
+
+pypass:latest
 ```
 
 ## Customization and Configuration

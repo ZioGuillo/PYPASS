@@ -8,13 +8,13 @@ from slackclient import SlackClient
 
 # ===============
 
-file = open("config.json")
+file = open("src/config.json")
 variables = json.loads(file.read())
 
 # ===============
 
 SLACK_BOT_TOKEN = variables['SLACK_BOT_TOKEN']          #
-slack_db = variables['slack_db']                        # slack db users
+slack_db = "src/" + variables['slack_db']               # slack db users
 
 db = Database(slack_db)
 
