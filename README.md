@@ -57,7 +57,7 @@ You can pass environment attributes directly into docker without modifying the a
 
 ## Customization and Configuration
 
-All server-side settings and client-side settings are stored in the `/appsettings.json` file.
+All server-side settings and client-side settings are stored in the `src/config.json` file inside the APP folder.
 The most relevant configuration entries are shown below. Make sure you make your changes to the `config.json` file using a regular text editor like [Visual Studio Code](https://code.visualstudio.com) or [sublime Text](https://www.sublimetext.com/).
 
 This is the Format of the config file:
@@ -81,7 +81,19 @@ This is the Format of the config file:
 
 
 - To enable The Secret Key in the App:
-  1. Find the `PrivateKey` entry and enter your private key within double quotes (`"`)
+  1. Find the `SECRET_KEY_FLASK` entry and enter your private key:
+     To create your personal SECRET_KEY_FLASK In a command promt do the following:
+``` command
+>>>python3
+Python 3.7.2
+[Clang 10.0.0 (clang-1000.11.45.5)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import secrets
+>>> stk = secrets.token_hex(16)
+>>> print(stk)
+```
+    Copy the code in the entrie.
+
   2. Find the `SiteKey` entry and enter your Site Key within double quotes (`"`)
 
   "SECRET_KEY_FLASK": "werewtrwetewrwer53535353",
