@@ -1,0 +1,14 @@
+{
+  "SECRET_KEY_FLASK": "",
+  "SLACK_BOT_TOKEN" : "",
+  "domain": "",
+  "BASEDN": "",
+  "user_admin" : "",
+  "passwd_admin" : "",
+  "slack_db" : "",
+  "Slack_Activation" : "False",
+  "debug": "True",
+  "company": "DIGITALEBRAIN",
+  "RECAPTCHA_PUBLIC_KEY": "",
+  "RECAPTCHA_PRIVATE_KEY": ""
+}
