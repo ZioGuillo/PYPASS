@@ -30,14 +30,14 @@ def disconnect():
     pass
 
 
-def conx(domain, user, passwd):
+def conx(servername, domain, user, passwd):
     """
     Connection to the server
     """
     tls_configuration = Tls(validate=ssl.CERT_NONE, version=ssl.PROTOCOL_TLSv1_2)
 
     # define the server and the connection
-    s = Server(domain, port=636, use_ssl=True, tls=tls_configuration)
+    s = Server(servername + "." + domain, port=636, use_ssl=True, tls=tls_configuration)
     conn = Connection(s, domain + "\\" + user, passwd, authentication=NTLM)
     conn.start_tls()
     conn.bind()
@@ -95,7 +95,7 @@ def search_userx(username, conn, basedn):
         return user_dn, user_mail
 
 
-def authenticate(domain, username, password):
+def authenticate(servername, domain, username, password):
     """
     Verifies credentials for username and password.
     Returns True on success or False on failure
@@ -103,7 +103,7 @@ def authenticate(domain, username, password):
 
     tls_configuration = Tls(validate=ssl.CERT_NONE, version=ssl.PROTOCOL_TLSv1_2)
     # define the server and the connection
-    s = Server(domain, port=636, use_ssl=True, tls=tls_configuration)
+    s = Server(servername + "." + domain, port=636, use_ssl=True, tls=tls_configuration)
     conn = Connection(s, domain + "\\" + username, password, authentication=NTLM)
     conn.start_tls()
     conn.bind()
@@ -122,17 +122,17 @@ def authenticate(domain, username, password):
         pass
 
 
-def reset_passwd(domain, user_admin, passwd_admin, basedn, username, current, new_passwd, enable):
+def reset_passwd(servername, domain, user_admin, passwd_admin, basedn, username, current, new_passwd, enable):
     """
     Verifies credentials for username and password.
     Returns True on success or False on failure
     """
 
-    conn = conx(domain, user_admin, passwd_admin)
+    conn = conx(servername, domain, user_admin, passwd_admin)
     user, email = search_userx(username, conn, basedn)
 
     try:
-        if not authenticate(domain, username, current):
+        if not authenticate(servername, domain, username, current):
             return False
         else:
             # perform the Bind operation

@@ -19,6 +19,7 @@ app.config['SECRET_KEY'] = variables['SECRET_KEY_FLASK']     #
 app.config['RECAPTCHA_PUBLIC_KEY'] = variables['RECAPTCHA_PUBLIC_KEY']
 app.config['RECAPTCHA_PRIVATE_KEY'] = variables['RECAPTCHA_PRIVATE_KEY']
 app.config['TESTING'] = variables['debug']
+servername = str(variables['servername'])
 domain = str(variables['domain'])                              # "contoso.com"
 BASEDN = str(variables['BASEDN'])                                # "OU=Users,dc=contoso,dc=com"
 user_admin = variables['user_admin']                         # "administrador"
@@ -41,7 +42,7 @@ def reset():
     if form.validate_on_submit():
         # noinspection PyBroadException
         try:
-            if reset_passwd(domain, user_admin, passwd_admin, BASEDN, str(form.username.data), str(form.password.data),
+            if reset_passwd(servername, domain, user_admin, passwd_admin, BASEDN, str(form.username.data), str(form.password.data),
                             str(form.new_password.data), enable=enable):
                 flash(u'Your password was changed for: ' + str(form.username.data), 'success')
                 return redirect(url_for('reset'))
