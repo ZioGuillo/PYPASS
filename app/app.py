@@ -19,8 +19,8 @@ app.config['SECRET_KEY'] = variables['SECRET_KEY_FLASK']     #
 app.config['RECAPTCHA_PUBLIC_KEY'] = variables['RECAPTCHA_PUBLIC_KEY']
 app.config['RECAPTCHA_PRIVATE_KEY'] = variables['RECAPTCHA_PRIVATE_KEY']
 app.config['TESTING'] = variables['debug']
-domain = variables['domain']                                 # "contoso.com"
-BASEDN = variables['BASEDN']                                 # "OU=Users,dc=contoso,dc=com"
+domain = str(variables['domain'])                              # "contoso.com"
+BASEDN = str(variables['BASEDN'])                                # "OU=Users,dc=contoso,dc=com"
 user_admin = variables['user_admin']                         # "administrador"
 passwd_admin = variables['passwd_admin']                     # "fsdfsfs#@$SDA"
 enable = variables['Slack_Activation']                       #  True  # Slack Activation True to activate
