@@ -25,6 +25,13 @@ user_admin = variables['user_admin']                         # "administrador"
 passwd_admin = variables['passwd_admin']                     # "fsdfsfs#@$SDA"
 enable = variables['Slack_Activation']                       #  True  # Slack Activation True to activate
 
+# SOCIAL NETWORK
+FOOTER = variables['FOOTER']
+TWITTER = variables['twitter']
+INSTAGRAM = variables['instagram']
+GITHUB = variables['github']
+LINKEDIN = variables['linkedin']
+
 
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/reset", methods=['GET', 'POST'])
@@ -45,7 +52,9 @@ def reset():
             pass
 
     return render_template('reset.html', title='AD Password Reset | ' + variables['company'],
-                           form=form, company=variables['company'])
+                           form=form, company=variables['company'], FOOTER=variables['FOOTER'],
+                           LINKEDIN=variables['linkedin'], GITHUB=variables['github'],
+                           INSTAGRAM=variables['instagram'], TWITTER=variables['twitter'])
 
 
 # 404 page

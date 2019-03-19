@@ -1,4 +1,4 @@
-{
+ {
   "SECRET_KEY_FLASK": "werewtrwetewrwer53535353",
   "SLACK_BOT_TOKEN" : "xoxb-",
   "domain": "domain.com",
@@ -8,7 +8,12 @@
   "slack_db" : "slack_db.json",
   "Slack_Activation" : "False",
   "debug": "True",
-  "company": "DIGITALEBRAIN",
+  "company": "AXS",
   "RECAPTCHA_PUBLIC_KEY": "GOOGLE CODE",
-  "RECAPTCHA_PRIVATE_KEY": "GOOGLE CODE"
+  "RECAPTCHA_PRIVATE_KEY": "GOOGLE CODE",
+   "FOOTER": "False",
+   "twitter": "#",
+   "instagram": "#",
+   "linkedin": "#",
+   "github": "#"
 }

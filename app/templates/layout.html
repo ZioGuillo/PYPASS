@@ -64,8 +64,8 @@
     </section>
   <!-- loader -->
   <!-- Footer section -->
-
-  <footer class="ftco-footer ftco-bg-dark ftco-section">
+  {% if FOOTER == 'True' %}
+   <footer class="ftco-footer ftco-bg-dark ftco-section">
     <div class="container">
 
       <div class="row">
@@ -73,10 +73,10 @@
           <div id="div_top_socials">
             <nav>
                 <ul id="ul_top_socials" class="et-social-icon" style="padding-left: 0px;">
-                    <li style="padding-right: 5px;"><a href="https://twitter.com/ZioGuillo"><i class="fab fa-lg fa-twitter"></i></a></li>
-                    <li style="padding-right: 5px;"><a href="https://github.com/ZioGuillo"><i class="fab fa-lg fa-github"></i></a></li>
-                    <li style="padding-right: 5px;"><a href="https://instagram.com/ZioGuillo"><i class="fab fa-lg fa-instagram"></i></a></li>
-                    <li style="padding-right: 5px;"><a href="https://www.linkedin.com/in/pablocisneros/"><i class="fab fa-lg fa-linkedin"></i></a></li>
+                    <li style="padding-right: 5px;"><a href={{ TWITTER }}><i class="fab fa-lg fa-twitter"></i></a></li>
+                    <li style="padding-right: 5px;"><a href={{ GITHUB }}><i class="fab fa-lg fa-github"></i></a></li>
+                    <li style="padding-right: 5px;"><a href={{ INSTAGRAM }}"><i class="fab fa-lg fa-instagram"></i></a></li>
+                    <li style="padding-right: 5px;"><a href={{ LINKEDIN }}><i class="fab fa-lg fa-linkedin"></i></a></li>
                 </ul>
             </nav>
         </div>
@@ -87,6 +87,7 @@
     </div>
   </footer>
   <!-- END Footer -->
+  {% endif %}
 
   <div id="ftco-loader" class="show fullscreen">
         <svg class="circular" width="48px" height="48px">
