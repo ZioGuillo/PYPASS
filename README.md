@@ -43,15 +43,21 @@ PyPass has the following features:
 [Follow this steps to do it](https://www.watchguard.com/help/docs/ssl/3/en-us/content/en-us/manage_system/active_directory_auth_w-ldap-ssl.html)*
 
 
-
 ## Docker
 
+1.  Just clone the repo and Modify the *config.json* file with the correct entries.
+2.  After run the follow docker command:
 
+    ``` docker
+    >>>docker build -t pypass:latest .
+    ```
+3.  Run the Docker command to run the image:
 
-```
+    ```docker
+    >>>docker run --name pypass-demo -d -p 80:5000 --rm pypass-demo:latest
+    ```
+By default the container will be run in the port:5000 and localhost. With this command you can route the port to the 80 or any you prefer.
 
-
-```
 
 ## Customization and Configuration
 
