@@ -30,7 +30,7 @@ def disconnect():
     pass
 
 
-def conx(servername, domain, user, passwd):
+def conx(domain, user, passwd):
     """
     Connection to the server
     """
@@ -95,7 +95,7 @@ def search_userx(username, conn, basedn):
         return user_dn, user_mail
 
 
-def authenticate(servername, domain, username, password):
+def authenticate(domain, username, password):
     """
     Verifies credentials for username and password.
     Returns True on success or False on failure
@@ -122,17 +122,17 @@ def authenticate(servername, domain, username, password):
         pass
 
 
-def reset_passwd(servername, domain, user_admin, passwd_admin, basedn, username, current, new_passwd, enable):
+def reset_passwd(domain, user_admin, passwd_admin, basedn, username, current, new_passwd, enable):
     """
     Verifies credentials for username and password.
     Returns True on success or False on failure
     """
 
-    conn = conx(servername, domain, user_admin, passwd_admin)
+    conn = conx(domain, user_admin, passwd_admin)
     user, email = search_userx(username, conn, basedn)
 
     try:
-        if not authenticate(servername, domain, username, current):
+        if not authenticate(domain, username, current):
             return False
         else:
             # perform the Bind operation

@@ -42,7 +42,7 @@ def reset():
     if form.validate_on_submit():
         # noinspection PyBroadException
         try:
-            if reset_passwd(servername, domain, user_admin, passwd_admin, BASEDN, str(form.username.data), str(form.password.data),
+            if reset_passwd(domain, user_admin, passwd_admin, BASEDN, str(form.username.data), str(form.password.data),
                             str(form.new_password.data), enable=enable):
                 flash(u'Your password was changed for: ' + str(form.username.data), 'success')
                 return redirect(url_for('reset'))
