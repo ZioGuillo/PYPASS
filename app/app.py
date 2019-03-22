@@ -19,7 +19,6 @@ app.config['SECRET_KEY'] = variables['SECRET_KEY_FLASK']     #
 app.config['RECAPTCHA_PUBLIC_KEY'] = variables['RECAPTCHA_PUBLIC_KEY']
 app.config['RECAPTCHA_PRIVATE_KEY'] = variables['RECAPTCHA_PRIVATE_KEY']
 app.config['TESTING'] = variables['debug']
-servername = str(variables['servername'])
 domain = str(variables['domain'])                              # "contoso.com"
 BASEDN = str(variables['BASEDN'])                                # "OU=Users,dc=contoso,dc=com"
 user_admin = variables['user_admin']                         # "administrador"

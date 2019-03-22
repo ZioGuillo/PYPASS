@@ -37,7 +37,7 @@ def conx(domain, user, passwd):
     tls_configuration = Tls(validate=ssl.CERT_NONE, version=ssl.PROTOCOL_TLSv1_2)
 
     # define the server and the connection
-    s = Server(servername + "." + domain, port=636, use_ssl=True, tls=tls_configuration)
+    s = Server(domain, port=636, use_ssl=True, tls=tls_configuration)
     conn = Connection(s, domain + "\\" + user, passwd, authentication=NTLM)
     conn.start_tls()
     conn.bind()
@@ -103,7 +103,7 @@ def authenticate(domain, username, password):
 
     tls_configuration = Tls(validate=ssl.CERT_NONE, version=ssl.PROTOCOL_TLSv1_2)
     # define the server and the connection
-    s = Server(servername + "." + domain, port=636, use_ssl=True, tls=tls_configuration)
+    s = Server(domain, port=636, use_ssl=True, tls=tls_configuration)
     conn = Connection(s, domain + "\\" + username, password, authentication=NTLM)
     conn.start_tls()
     conn.bind()
