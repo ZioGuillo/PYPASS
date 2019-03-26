@@ -2,6 +2,7 @@ import json
 from flask import Flask, render_template, flash, url_for, redirect
 from forms import passwdchangeform
 from model import reset_passwd
+import ssl
 
 # In the console to get secret key app
 # import secrets
@@ -11,6 +12,9 @@ from model import reset_passwd
 
 file = open("src/config.json")
 variables = json.loads(file.read())
+
+ctx = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
+ctx.load_cert_chain('src/' + variables['CRT_CERTIFICATE'], 'src/' + variables['KEY_CERTIFICATE'])
 
 # ===============
 
@@ -57,7 +61,8 @@ def page_not_found(e):
 if __name__ == "__main__":
     # Only for debugging while developing
 
-    app.run(host='0.0.0.0', debug=variables['debug'])
+    # app.run(host='0.0.0.0', debug=variables['debug'])
+    app.run(debug=variables['debug'], host='0.0.0.0', port=5000, ssl_context=ctx)
     # app.run()
     # app.run(ssl_context='adhoc')
     # app.run(debug=True, ssl_context=('cert.pem', 'key.pem'))
