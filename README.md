@@ -54,7 +54,7 @@ PyPass has the following features:
 3.  Run the Docker command to run the image:
 
     ```docker
-    >>>docker run --name pypass-demo -d -p 80:5000 --rm pypass-demo:latest
+    >>>docker run --dns <ip of your DNS server or AD> --name pypaxs -d -p 80:5000 --rm pypass:latest
     ```
 By default the container will be run in the port:5000 and localhost. With this command you can route the port to the 80 or any you prefer.
 
