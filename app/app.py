@@ -62,7 +62,7 @@ if __name__ == "__main__":
     # Only for debugging while developing
 
     # app.run(host='0.0.0.0', debug=variables['debug'])
-    app.run(debug=variables['debug'], host='0.0.0.0', port=5000, ssl_context=ctx)
+    app.run(debug=variables['debug'], host='0.0.0.0', port=443, ssl_context=ctx)
     # app.run()
     # app.run(ssl_context='adhoc')
     # app.run(debug=True, ssl_context=('cert.pem', 'key.pem'))
