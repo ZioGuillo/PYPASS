@@ -6,7 +6,7 @@ import ssl
 
 # In the console to get secret key app
 # import secrets
-# stk = secrets.token_hex(16)
+# stk = secrets.token_hex(16)pip install 
 
 # ===============
 
