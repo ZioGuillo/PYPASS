@@ -45,3 +45,4 @@ bin/
 venv
 .idea
 _pycache_
+config.json
