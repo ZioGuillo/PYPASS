@@ -1,6 +1,11 @@
 {% extends "layout.html" %}
 
 {% block content %}
+    <style>
+        .form-group {
+            DISPLAY: inline-grid;
+        }
+    </style>
     <div class="content-section containerx">
         <form method="POST" action="">
             {{ form.hidden_tag() }}
@@ -59,7 +64,7 @@
                     {% endif %}
                 </div>
             </fieldset>
-            <div class="form-group" style="DISPLAY: inline-grid align: center">
+            <div class="form-group" style="DISPLAY: inline-grid;align: center">
                 {{ form.submit(class="btn btn-outline-info") }}
                 {{ form.recaptcha }}
             </div>
