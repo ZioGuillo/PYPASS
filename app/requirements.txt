@@ -15,7 +15,7 @@ future==0.18.3
 idna==2.8
 isort==4.3.4
 itsdangerous==0.24
-Jinja2==2.11.3
+Jinja2==3.1.3
 jsondatabase==0.1.7
 lazy-object-proxy==1.3.1
 ldap3==2.5.2
