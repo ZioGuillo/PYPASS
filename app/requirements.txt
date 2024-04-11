@@ -12,7 +12,7 @@ Flask==2.2.5
 Flask-RESTful==0.3.6
 Flask-WTF==0.14.2
 future==0.18.3
-idna==2.8
+idna==3.7
 isort==4.3.4
 itsdangerous==0.24
 Jinja2==3.1.3
