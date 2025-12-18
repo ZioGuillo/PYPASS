@@ -29,7 +29,7 @@ pycparser==2.19
 pylint==2.2.2
 pymongo==4.6.3
 pyOpenSSL==19.0.0
-python-ldap==3.4.0
+python-ldap==3.4.5
 pytz==2018.5
 requests==2.32.2
 six==1.12.0
