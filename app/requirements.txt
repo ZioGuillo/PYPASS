@@ -7,7 +7,7 @@ certifi==2024.7.4
 cffi==1.12.2
 chardet==3.0.4
 click==6.7
-cryptography==43.0.1
+cryptography==44.0.1
 Flask==2.2.5
 Flask-RESTful==0.3.6
 Flask-WTF==0.14.2
