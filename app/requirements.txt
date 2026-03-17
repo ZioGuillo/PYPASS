@@ -22,7 +22,7 @@ ldap3==2.5.2
 MarkupSafe==1.0
 mccabe==0.6.1
 pyad==0.5.20
-pyasn1==0.4.5
+pyasn1==0.6.3
 pyasn1-modules==0.2.4
 pycodestyle==2.5.0
 pycparser==2.19
