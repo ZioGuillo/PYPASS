@@ -1,13 +1,25 @@
-FROM ubuntu:latest
-MAINTAINER PABLO CISNEROS "pcisnerp@gmail.com"
-RUN apt-get update \
-  && apt-get install -y python3-pip python3-dev libsasl2-dev python-dev libldap2-dev libssl-dev libsnmp-dev apt-utils iputils-ping \
-  && cd /usr/local/bin \
-  && ln -s /usr/bin/python3 python \
-  && pip3 install --upgrade pip
+FROM python:3.12-slim
 
-COPY    ./app /app
+LABEL maintainer="Pablo Cisneros <pcisnerp@gmail.com>"
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-RUN pip install -r requirements.txt
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+    build-essential \
+    libldap2-dev \
+    libsasl2-dev \
+    libssl-dev \
+  && rm -rf /var/lib/apt/lists/*
+
+COPY app/requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r /app/requirements.txt
+
+COPY app/ /app
+
+EXPOSE 5000
+
+CMD ["flask", "--app", "app", "run", "--host", "0.0.0.0", "--port", "5000"]

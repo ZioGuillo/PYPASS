@@ -8486,3 +8486,33 @@ textarea.form-control {
   100% {
     stroke-dasharray: 89, 200;
     stroke-dashoffset: -136px; } }
+
+.ldap-status {
+  position: static;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border, #d9e2ec);
+  color: var(--text, #0f172a);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ldap-status .ldap-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #f59e0b;
+}
+
+.ldap-status.ldap-ok .ldap-dot {
+  background: #22c55e;
+}
+
+.ldap-status.ldap-fail .ldap-dot {
+  background: #ef4444;
+}

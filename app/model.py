@@ -1,24 +1,28 @@
 #!/usr/bin/python3
 # import class and constants
-import ssl
 import json
+import ssl
+from pathlib import Path
+
 from jsondb import Database
 from ldap3 import Tls, NTLM, Connection, Server, SUBTREE, MODIFY_REPLACE
-from slackclient import SlackClient
+from slack_sdk import WebClient
 
 # ===============
 
-file = open("src/config.json")
-variables = json.loads(file.read())
+base_dir = Path(__file__).resolve().parent
+config_path = base_dir / "src" / "config.json"
+with config_path.open("r", encoding="utf-8") as config_file:
+    variables = json.load(config_file)
 
 # ===============
 
 SLACK_BOT_TOKEN = variables['SLACK_BOT_TOKEN']          #
-slack_db = "src/" + variables['slack_db']               # slack db users
+slack_db = str(base_dir / "src" / variables["slack_db"])               # slack db users
 
 db = Database(slack_db)
 
-sc = SlackClient(SLACK_BOT_TOKEN)
+sc = WebClient(token=SLACK_BOT_TOKEN)
 
 # ===============
 
@@ -37,8 +41,14 @@ def conx(domain, user, passwd):
     tls_configuration = Tls(validate=ssl.CERT_NONE, version=ssl.PROTOCOL_TLSv1_2)
 
     # define the server and the connection
-    s = Server(domain, port=636, use_ssl=True, tls=tls_configuration)
-    conn = Connection(s, domain + "\\" + user, passwd, authentication=NTLM)
+    s = Server(domain, port=636, use_ssl=True, tls=tls_configuration, connect_timeout=5)
+    conn = Connection(
+        s,
+        domain + "\\" + user,
+        passwd,
+        authentication=NTLM,
+        receive_timeout=5,
+    )
     conn.start_tls()
     conn.bind()
 
@@ -56,15 +66,15 @@ def conx(domain, user, passwd):
 
 
 def search_slack_id(email):
-    for users in db['members']:
+    for users in db["members"]:
         # print(users)
-        if not (users['is_bot'] and users['deleted']):
+        if not (users["is_bot"] and users["deleted"]):
             # noinspection PyBroadException
             try:
-                if users['profile']['email'] == email:
+                if users["profile"]["email"] == email:
                     # print(users['id'], users['profile']['email'])
-                    return users['id']
-            except:
+                    return users["id"]
+            except Exception:
                 print("User with this email: " + email + " no found!!")
 
 
@@ -73,7 +83,7 @@ def search_userx(username, conn, basedn):
         Verifies credentials for username and password.
         Returns True on success or False on failure
     """
-    global user_dn
+    user_dn = None
     SEARCHFILTER = '(&(|' \
                    '(userPrincipalName=' + username + ')' \
                                                       '(samaccountname=' + username + ')' \
@@ -94,6 +104,8 @@ def search_userx(username, conn, basedn):
 
         return user_dn, user_mail
 
+    return None, None
+
 
 def authenticate(domain, username, password):
     """
@@ -103,8 +115,14 @@ def authenticate(domain, username, password):
 
     tls_configuration = Tls(validate=ssl.CERT_NONE, version=ssl.PROTOCOL_TLSv1_2)
     # define the server and the connection
-    s = Server(domain, port=636, use_ssl=True, tls=tls_configuration)
-    conn = Connection(s, domain + "\\" + username, password, authentication=NTLM)
+    s = Server(domain, port=636, use_ssl=True, tls=tls_configuration, connect_timeout=5)
+    conn = Connection(
+        s,
+        domain + "\\" + username,
+        password,
+        authentication=NTLM,
+        receive_timeout=5,
+    )
     conn.start_tls()
     conn.bind()
     # print(conn.usage)
@@ -148,10 +166,12 @@ def reset_passwd(domain, user_admin, passwd_admin, basedn, username, current, ne
             if enable:
                 x = search_slack_id(email)
 
-                result = sc.api_call("chat.postMessage", channel=x,
-                                     text="You password was reset! testing :) not panic :tada:", as_user=True)
+                result = sc.chat_postMessage(
+                    channel=x,
+                    text="You password was reset! testing :) not panic :tada:",
+                )
 
-                print("Result: ", result['ok'])
+                print("Result: ", result["ok"])
             else:
                 pass
 

@@ -6,7 +6,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
 
-    <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Newsreader:opsz,wght@16..144,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S" crossorigin="anonymous">
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/content.css') }}">
@@ -19,7 +19,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.theme.default.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/magnific-popup.css') }}">
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/aos.css') }}">
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/ionicons.min.css') }}">
 
@@ -31,9 +30,19 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/icomoon.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   </head>
-  <body>
+  <body class="theme-light">
+  <div class="top-right-tools">
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color theme" data-theme="theme-light">
+      <i class="fas fa-moon theme-icon theme-icon-moon" aria-hidden="true"></i>
+      <i class="fas fa-sun theme-icon theme-icon-sun" aria-hidden="true"></i>
+    </button>
+    <div id="ldap-status" class="ldap-status ldap-unknown" data-endpoint="{{ url_for('ldap_health') }}" aria-live="polite">
+      <span class="ldap-dot" aria-hidden="true"></span>
+      <span class="ldap-text">LDAP</span>
+    </div>
+  </div>
   <!-- nav -->
-  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar" data-aos="fade-down" data-aos-delay="500">
+  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
       <div class="container">
         <a class="navbar-brand" href="/"><span class="flaticon-brain"></span> {{ company }} </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,7 +53,7 @@
 <!-- END nav -->
 
 
-  <section class="ftco-cover overlay" style="background-image: url({{ url_for('static', filename='images/bg_1.jpg') }})" id="section-home" data-aos="fade"  data-stellar-background-ratio="0.5">
+  <section class="ftco-cover overlay hero" id="section-home" data-stellar-background-ratio="0.5">
       <div class="container">
         <div class="row align-items-center justify-content-center ftco-vh-100">
          <div class="col-md-8">
@@ -72,39 +81,35 @@
         <div class="col-md-12 text-center">
           <div id="div_top_socials">
             <nav>
-                <ul id="ul_top_socials" class="et-social-icon" style="padding-left: 0px;">
-                    <li style="padding-right: 5px;"><a href="https://twitter.com/ZioGuillo"><i class="fab fa-lg fa-twitter"></i></a></li>
-                    <li style="padding-right: 5px;"><a href="https://github.com/ZioGuillo"><i class="fab fa-lg fa-github"></i></a></li>
-                    <li style="padding-right: 5px;"><a href="https://instagram.com/ZioGuillo"><i class="fab fa-lg fa-instagram"></i></a></li>
-                    <li style="padding-right: 5px;"><a href="https://www.linkedin.com/in/pablocisneros/"><i class="fab fa-lg fa-linkedin"></i></a></li>
+                <ul id="ul_top_socials" class="et-social-icon social-links" style="padding-left: 0px;">
+                  <li><a href="https://twitter.com/ZioGuillo" aria-label="Twitter"><i class="fab fa-twitter"></i></a></li>
+                  <li><a href="https://github.com/ZioGuillo" aria-label="GitHub"><i class="fab fa-github"></i></a></li>
+                  <li><a href="https://instagram.com/ZioGuillo" aria-label="Instagram"><i class="fab fa-instagram"></i></a></li>
+                  <li><a href="https://www.linkedin.com/in/pablocisneros/" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a></li>
                 </ul>
             </nav>
         </div>
           <p>Copyright &copy;<script>document.write(new Date().getFullYear());
-          </script> All rights reserved | This template is made with <i class="flaticon-brain" aria-hidden="true"></i> by <a href="www.digitalebrain.com" target="_blank" class="text-primary">DigitaleBrain</a></p>
+          </script> All rights reserved | Built by <a href="https://ibrain.dev" target="_blank" class="text-primary">IBrain.dev</a></p>
         </div>
       </div>
     </div>
   </footer>
   <!-- END Footer -->
 
-  <div id="ftco-loader" class="show fullscreen">
-        <svg class="circular" width="48px" height="48px">
-            <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/>
-            <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/>
-        </svg>
-  </div>
+    <div id="ftco-loader" class="show fullscreen" style="display: none;">
+      <svg class="circular" width="48px" height="48px">
+        <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/>
+        <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/>
+      </svg>
+    </div>
 
   <script src="{{url_for('static', filename='js/jquery.min.js')}}"></script>
-  <script src="{{url_for('static', filename='js/jquery-migrate-3.0.1.min.js')}}"></script>
-  <script src="{{url_for('static', filename='js/popper.min.js')}}"></script>
-  <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
   <script src="{{url_for('static', filename='js/jquery.easing.1.3.js')}}"></script>
   <script src="{{url_for('static', filename='js/jquery.waypoints.min.js')}}"></script>
   <script src="{{url_for('static', filename='js/jquery.stellar.min.js')}}"></script>
   <script src="{{url_for('static', filename='js/owl.carousel.min.js')}}"></script>
   <script src="{{url_for('static', filename='js/jquery.magnific-popup.min.js')}}"></script>
-  <script src="{{url_for('static', filename='js/aos.js')}}"></script>
   <script src="{{url_for('static', filename='js/jquery.animateNumber.min.js')}}"></script>
 
   <script src="{{url_for('static', filename='js/main.js')}}"></script>

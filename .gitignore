@@ -7,6 +7,9 @@
 *.o
 *.so
 *.pyc
+.venv/
+.pytest_cache/
+__pycache__/
 
 
 # Packages #
@@ -23,6 +26,7 @@
 *.zip
 *.doc
 *.docx
+*.toml
 
 # Logs and databases #
 ######################

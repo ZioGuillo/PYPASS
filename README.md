@@ -1,165 +1,205 @@
-# Active Directory Password Reset Service ![PyPass Logo](src/pypass.png)
-# PyPass: A self-service password change utility for Active Directory
+# PyPass - Active Directory Password Reset Service
 
-*:star: Please star this project if you find it useful!*
+![Python](https://img.shields.io/badge/python-3.12-blue)
+![Flask](https://img.shields.io/badge/flask-3.x-black)
+![LDAP](https://img.shields.io/badge/ldap-ldaps-2f855a)
+![Docker](https://img.shields.io/badge/docker-ready-2496ed)
 
-- [PyPass: A self-service password change utility for Active Directory](#pypass-a-self-service-password-change-utility-for-active-directory)
-  - [Overview](#overview)
-    - [Features](#features)
-  - [Installation](#installation)
-  - [Docker](#docker)
-  - [Customization and Configuration](#customization-and-configuration)
-    - [Slack](#slack)
-  - [Troubleshooting](#troubleshooting)
-    - [LDAP Support](#ldap-support)
-  - [Build your own version](#build-your-own-version)
-  - [Create your own provider](#create-your-own-provider)
-  - [License](#license)
+PyPass is a simple self-service password change web app for Active Directory. It is built with Python, Flask, LDAP3, and a lightweight UI.
 
-## Overview
+![PyPass Logo](src/pypass.png)
 
-PyPass is a very simple 1-page web application written in [Python](https://www.python.org/), using [Flask](http://flask.pocoo.org/) , [Angular Material](https://material.angular.io/), [Ldap3](https://ldap3.readthedocs.io/), and [Microsoft Directory Services](https://docs.microsoft.com/en-us/dotnet/api/system.directoryservices) (Default provider).
+## Features
 
-It allows users to change their Active Directory password on their own, provided the user is not disabled.
+- Self-service password reset for AD users
+- reCAPTCHA support
+- Responsive UI for mobile and desktop
+- Optional Slack notifications
+- LDAP connectivity status badge (top-right)
+- UI renders even if LDAP is offline (badge turns red)
 
-PyPass does not require any configuration, as it obtains the principal context from the current domain. There really is no free alternative out there (that I know of) so hopefully this saves someone else some time and money.
+## Requirements
 
-### Features
+- Python 3.12
+- LDAP server reachable on port 636 (LDAPS)
 
-PyPass has the following features:
+## Quick start (local)
 
-- Easily localizable
-- Supports [reCAPTCHA](https://www.google.com/recaptcha/intro/index.html)
-- Responsive design that works on mobiles, tablets, and desktops.
-- Works with Windows/Linux servers.
+```bash
+python3.12 -m venv .venv
+.venv/bin/pip install -r app/requirements.txt
+PYTHONPATH=app .venv/bin/flask --app app run --host 0.0.0.0 --port 5001
+```
 
-<img align="center" src="src/screen.png"></img>
+Open http://127.0.0.1:5001
 
-## Installation
+## Configuration
 
-*You can easily install using Python3 and Flask. Check the next section to know how.*
+All settings live in [app/src/config.json](app/src/config.json). Edit the values to match your AD environment.
 
-*To enable ldap services in the server(Windows) you need to install the Certificate services on the server.
-[Follow this steps to do it](https://www.watchguard.com/help/docs/ssl/3/en-us/content/en-us/manage_system/active_directory_auth_w-ldap-ssl.html)*
-
-
-## Docker
-
-1.  Just clone the repo and Modify the *config.json* file with the correct entries.
-2.  After run the follow docker command:
-
-    ``` docker
-    >>>docker build -t pypass:latest .
-    ```
-3.  Run the Docker command to run the image:
-
-    ```docker
-    >>>docker run --dns <ip of your DNS server or AD> --name pypaxs -d -p 80:5000 --rm pypass:latest
-    ```
-By default the container will be run in the port:5000 and localhost. With this command you can route the port to the 80 or any you prefer.
-
-
-## Customization and Configuration
-
-All server-side settings and client-side settings are stored in the `src/config.json` file inside the APP folder.
-The most relevant configuration entries are shown below. Make sure you make your changes to the `config.json` file using a regular text editor like [Visual Studio Code](https://code.visualstudio.com) or [sublime Text](https://www.sublimetext.com/).
-
-This is the Format of the config file:
-
-``` json
+```json
 {
   "SECRET_KEY_FLASK": "werewtrwetewrwer53535353",
-  "SLACK_BOT_TOKEN" : "xoxb-",
+  "SLACK_BOT_TOKEN": "xoxb-",
   "domain": "domain.com",
   "BASEDN": "OU=Users,dc=domain,dc=com",
-  "user_admin" : "admin-user",
-  "passwd_admin" : "password_admin",
-  "slack_db" : "slack_db.json",
-  "Slack_Activation" : "False",
+  "user_admin": "admin-user",
+  "passwd_admin": "password_admin",
+  "slack_db": "slack_db.json",
+  "Slack_Activation": "False",
   "debug": "True",
   "company": "DIGITALEBRAIN",
   "RECAPTCHA_PUBLIC_KEY": "GOOGLE CODE",
-  "RECAPTCHA_PRIVATE_KEY": "GOOGLE CODE"
+  "RECAPTCHA_PRIVATE_KEY": "GOOGLE CODE",
+  "CRT_CERTIFICATE": "name.crt",
+  "KEY_CERTIFICATE": "name.key"
 }
 ```
 
+### Generate a Flask secret key
 
-1.  To enable The Secret Key in the App:
-    Find the `SECRET_KEY_FLASK` entry and enter your private key:
-    To create your personal SECRET_KEY_FLASK In a command promt do the following:
-    ``` command
-    >>>python3
-    Python 3.7.2
-    [Clang 10.0.0 (clang-1000.11.45.5)] on darwin
-    Type "help", "copyright", "credits" or "license" for more information.
-    >>> import secrets
-    >>> stk = secrets.token_hex(16)
-    >>> print(stk)
+```bash
+python3.12 - <<'PY'
+import secrets
+print(secrets.token_hex(16))
+PY
+```
+
+### LDAP status badge
+
+The UI shows a green/red indicator based on `/health/ldap`, which attempts a TCP connect to the configured LDAP host on port 636. The page still loads if LDAP is offline, so you can verify the UI and config without a live LDAP connection. When LDAP is available, the badge turns green.
+
+## reCAPTCHA setup
+
+PyPass uses Google reCAPTCHA via Flask-WTF.
+
+1. Create keys at https://www.google.com/recaptcha/admin/create
+2. Use the site key and secret key in [app/src/config.json](app/src/config.json):
+
+```json
+"RECAPTCHA_PUBLIC_KEY": "YOUR_SITE_KEY",
+"RECAPTCHA_PRIVATE_KEY": "YOUR_SECRET_KEY",
+"RECAPTCHA_ENABLED": "True"
+```
+
+If you want to disable reCAPTCHA, set `RECAPTCHA_ENABLED` to `False`.
+
+## LDAP setup guide
+
+To enable LDAP/LDAPS connectivity from any LDAP server, confirm the items below:
+
+1. **LDAPS endpoint**
+  - Ensure the LDAP server supports LDAPS on port 636.
+  - Open firewall rules to allow inbound 636 from the app host.
+  - If you must use LDAP (389), update the code to use port 389 and disable SSL (not recommended).
+
+2. **Certificates (LDAPS)**
+  - The LDAP server must present a valid certificate.
+  - If you use an internal CA, add the CA certificate to the OS trust store on the app host.
+
+3. **Service account**
+  - Create an LDAP user/service account with permission to read user attributes and change passwords.
+  - In Active Directory, the account must be allowed to reset passwords for the target OU.
+
+4. **Config values**
+  - `domain`: LDAP hostname or IP (e.g., `ldap.example.com`)
+  - `BASEDN`: Base DN for users (e.g., `OU=Users,DC=example,DC=com`)
+  - `user_admin` / `passwd_admin`: service account credentials
+
+5. **Connectivity tests (optional)**
+  - Test TLS handshake:
+    ```bash
+    openssl s_client -connect ldap.example.com:636
     ```
-    Copy the code in the entrie.
-
-2.  Find the `SLACK_BOT_TOKEN` entry and enter your Slack Token
-    To get your slack Token [follow this steps](https://get.slack.help/hc/en-us/articles/215770388-Create-and-regenerate-API-tokens) and your Token need to start with *xoxb-*
-
-3. For the AD Credentials need to have admin priviligies or the user be able to change passwords.
-
-    ``` json
-    "domain": "domain.com",
-    "BASEDN": "OU=Users,dc=domain,dc=com",
-    "user_admin" : "admin-user",
-    "passwd_admin" : "password_admin",
-    ```
-## Slack
-
-4. To enable and use the slack notification, you need to download the slack DB in a file and put in the same folder *SRC FOLDER* of the config file.
-    - To Download the Slack DB do the follow.
-    - Create a Python file and put this code:
-
-    ``` python
-    import json
-    from slackclient import SlackClient
-
-    SLACK_BOT_TOKEN = "xoxb-YOUR-TOKEN"
-    data = json.dumps(sc.api_call("users.list"), indent=4, sort_keys=True)
-    print(data)
+  - Test LDAP bind (if you have ldapsearch):
+    ```bash
+    ldapsearch -H ldaps://ldap.example.com:636 -D "user@example.com" -W -b "OU=Users,DC=example,DC=com"
     ```
 
-    Once in the command promt line export the results in a JSON file:
+If LDAP is unreachable, the app will still render and show a warning message, and the status badge turns red.
 
-    ``` cmd
-    >>>python3 slack_file.py >> slack_db.json
+### Slack setup
 
-    ```
-    The File have to be in the *src* folder and put the complete name of the file in the entrie ```"slack_db" : "slack_db.json",```
-    Once you have that change the ```"Slack_Activation" : "False"``` to ```True```.
+To enable Slack notifications:
 
-5.  Put the Recaptcha Codes in the entries:
+1. Set `SLACK_BOT_TOKEN` and `Slack_Activation` to `True` in the config.
+2. Export your Slack user list and save it in `app/src/`:
 
-    ``` json
-    "RECAPTCHA_PUBLIC_KEY": "GOOGLE CODE",
-    "RECAPTCHA_PRIVATE_KEY": "GOOGLE CODE"
-    ```
-    To get this codes [click in this link](https://developers.google.com/recaptcha/)
+```python
+import json
+from slack_sdk import WebClient
 
-6.  The rest of the configuration entries are all pretty much all UI strings. Change them to localize, or to brand this utility, to meet your needs.
+SLACK_BOT_TOKEN = "xoxb-YOUR-TOKEN"
+sc = WebClient(token=SLACK_BOT_TOKEN)
+response = sc.users_list()
+data = json.dumps(response.data, indent=4, sort_keys=True)
+print(data)
+```
+
+```bash
+python3.12 slack_file.py >> app/src/slack_db.json
+```
+
+## Docker
+
+```bash
+docker build -t pypass:latest .
+docker run --dns <dns-or-ad-ip> --name pypass -d -p 80:5000 --rm pypass:latest
+```
+
+## Kubernetes (example)
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pypass
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pypass
+  template:
+    metadata:
+      labels:
+        app: pypass
+    spec:
+      containers:
+        - name: pypass
+          image: pypass:latest
+          ports:
+            - containerPort: 5000
+          env:
+            - name: PYTHONPATH
+              value: "/app"
+          volumeMounts:
+            - name: config
+              mountPath: /app/src/config.json
+              subPath: config.json
+      volumes:
+        - name: config
+          configMap:
+            name: pypass-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pypass
+spec:
+  selector:
+    app: pypass
+  ports:
+    - port: 80
+      targetPort: 5000
+```
+
+Create a ConfigMap named `pypass-config` with your `config.json` before applying the manifest.
 
 ## Troubleshooting
 
-- None Reported
-
-### LDAP Support
-
-- None reported
-
-
-## Build your own version
-
-If you need to modify the source code (either backend or frontend). You require Python3 and Flask.
-
-
-*Note* -
-
+- If LDAP is unreachable, the app shows a warning message and the status badge turns red.
+- For LDAPS on Windows, ensure certificate services are installed on the domain controller.
 
 ## License
 
-PyPass is open source software and [MIT licensed](https://github.com/ZioGuillo/PYPASS/blob/master/LICENSE). *Please star this project if you like it.*
+MIT. See [LICENSE](LICENSE).
