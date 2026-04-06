@@ -37,7 +37,7 @@ Open http://127.0.0.1:5001
 ## Configuration
 
 
-**Configuration: Required Environment Variables**
+## Configuration: Required Environment Variables
 
 Set these variables in your `.env` file (for local/dev) or as GitHub/CI/CD secrets (for production):
 
@@ -69,12 +69,14 @@ COMPANY=YourCompanyName
 DEBUG=True
 ```
 
-**For GitHub Actions or other CI/CD:**
+
+### For GitHub Actions or other CI/CD
 
 Add the same variables as repository or environment secrets. All sensitive values (passwords, tokens, keys) must be set as secrets, not in code or config files.
 
 **TLS assets:**
 - You can provide certificate/key as file paths (`CRT_CERTIFICATE`, `KEY_CERTIFICATE`) or as inline PEM values (`CRT_CERTIFICATE_PEM`, `KEY_CERTIFICATE_PEM`).
+
 
 ### Generate a Flask secret key
 
@@ -85,11 +87,13 @@ print(secrets.token_hex(16))
 PY
 ```
 
+
 ### LDAP status badge
 
 The UI shows a green/red indicator based on `/health/ldap`, which attempts a TCP connect to the configured LDAP host on port 636. The page still loads if LDAP is offline, so you can verify the UI and config without a live LDAP connection. When LDAP is available, the badge turns green.
 
-## reCAPTCHA setup
+
+## reCAPTCHA Setup
 
 PyPass uses Google reCAPTCHA via Flask-WTF.
 
@@ -105,7 +109,8 @@ RECAPTCHA_ENABLED=True
 
 If you want to disable reCAPTCHA, set `RECAPTCHA_ENABLED` to `False`.
 
-## LDAP setup guide
+
+## LDAP Setup Guide
 
 To enable LDAP/LDAPS connectivity from any LDAP server, confirm the items below:
 
@@ -139,7 +144,8 @@ To enable LDAP/LDAPS connectivity from any LDAP server, confirm the items below:
 
 If LDAP is unreachable, the app will still render and show a warning message, and the status badge turns red.
 
-### Slack setup
+
+## Slack Setup
 
 
 To enable Slack notifications:
@@ -159,11 +165,13 @@ print(data)
 ```
 
 
+
 Set `SLACK_BOT_TOKEN` in `.env` or your deployment environment before running this script.
 
 ```bash
 python3.12 slack_file.py >> app/src/slack_db.json
 ```
+
 
 ## Docker
 
@@ -172,7 +180,8 @@ docker build -t pypass:latest .
 docker run --dns <dns-or-ad-ip> --env-file .env --name pypass -d -p 80:5000 --rm pypass:latest
 ```
 
-## Kubernetes (example)
+
+## Kubernetes (Example)
 
 ```yaml
 apiVersion: apps/v1
@@ -218,14 +227,17 @@ spec:
       targetPort: 5000
 ```
 
+
 Create a ConfigMap named `pypass-config` with your `config.json` before applying the manifest.
 
 For secrets, use Kubernetes Secrets or your platform's secret store and expose them as environment variables with the same names shown in `.env.example`.
+
 
 ## Troubleshooting
 
 - If LDAP is unreachable, the app shows a warning message and the status badge turns red.
 - For LDAPS on Windows, ensure certificate services are installed on the domain controller.
+
 
 ## License
 
