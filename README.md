@@ -1,3 +1,4 @@
+
 # PyPass - Active Directory Password Reset Service
 
 ![Python](https://img.shields.io/badge/python-3.12-blue)
@@ -40,6 +41,7 @@ PYTHONPATH=app .venv/bin/flask --app app run --host 0.0.0.0 --port 5001
 Set these variables in your `.env` file (for local/dev) or as GitHub/CI/CD secrets (for production):
 
 # Flask secret key (required)
+
 ```dotenv
 # Flask secret key (required)
 SECRET_KEY_FLASK=replace-with-flask-secret
@@ -65,7 +67,8 @@ DEBUG=True
 
 
 
-### For GitHub Actions or other CI/CD
+
+## For GitHub Actions or other CI/CD
 
 Add the same variables as repository or environment secrets. All sensitive values (passwords, tokens, keys) must be set as secrets, not in code or config files.
 
@@ -75,7 +78,8 @@ Add the same variables as repository or environment secrets. All sensitive value
 
 
 
-### Generate a Flask secret key
+
+## Generate a Flask secret key
 
 
 ```bash
@@ -87,9 +91,11 @@ PY
 
 
 
-### LDAP status badge
+
+## LDAP status badge
 
 The UI shows a green/red indicator based on `/health/ldap`, which attempts a TCP connect to the configured LDAP host on port 636. The page still loads if LDAP is offline, so you can verify the UI and config without a live LDAP connection. When LDAP is available, the badge turns green.
+
 
 
 ## reCAPTCHA Setup
@@ -97,7 +103,9 @@ The UI shows a green/red indicator based on `/health/ldap`, which attempts a TCP
 PyPass uses Google reCAPTCHA via Flask-WTF.
 
 
+
 1. Create keys at [https://www.google.com/recaptcha/admin/create](https://www.google.com/recaptcha/admin/create)
+
 
 2. Set `RECAPTCHA_PUBLIC_KEY` and `RECAPTCHA_PRIVATE_KEY` in `.env` or your deployment environment:
 
@@ -107,7 +115,9 @@ RECAPTCHA_PRIVATE_KEY=YOUR_SECRET_KEY
 RECAPTCHA_ENABLED=True
 ```
 
+
 If you want to disable reCAPTCHA, set `RECAPTCHA_ENABLED` to `False`.
+
 
 
 ## LDAP Setup Guide
@@ -137,18 +147,21 @@ To enable LDAP/LDAPS connectivity from any LDAP server, confirm the items below:
    - Test TLS handshake:
 
 
-     ```bash
-     openssl s_client -connect ldap.example.com:636
-     ```
+
+    ```bash
+    openssl s_client -connect ldap.example.com:636
+    ```
 
    - Test LDAP bind (if you have ldapsearch):
 
-     ```bash
-     ldapsearch -H ldaps://ldap.example.com:636 -D "user@example.com" -W -b "OU=Users,DC=example,DC=com"
-     ```
+
+    ```bash
+    ldapsearch -H ldaps://ldap.example.com:636 -D "user@example.com" -W -b "OU=Users,DC=example,DC=com"
+    ```
 
 
 If LDAP is unreachable, the app will still render and show a warning message, and the status badge turns red.
+
 
 
 ## Slack Setup
@@ -176,12 +189,14 @@ print(data)
 
 
 
+
 Set `SLACK_BOT_TOKEN` in `.env` or your deployment environment before running this script.
 
 
 ```bash
 python3.12 slack_file.py >> app/src/slack_db.json
 ```
+
 
 
 ## Docker
@@ -192,6 +207,7 @@ docker run --dns <dns-or-ad-ip> --env-file .env --name pypass -d -p 80:5000 --rm
 docker build -t pypass:latest .
 docker run --dns <dns-or-ad-ip> --env-file .env --name pypass -d -p 80:5000 --rm pypass:latest
 ```
+
 
 
 ## Kubernetes (Example)
@@ -244,9 +260,12 @@ spec:
 
 
 
+
 Create a ConfigMap named `pypass-config` with your `config.json` before applying the manifest.
 
+
 For secrets, use Kubernetes Secrets or your platform's secret store and expose them as environment variables with the same names shown in `.env.example`.
+
 
 
 ## Troubleshooting
@@ -254,6 +273,7 @@ For secrets, use Kubernetes Secrets or your platform's secret store and expose t
 
 - If LDAP is unreachable, the app shows a warning message and the status badge turns red.
 - For LDAPS on Windows, ensure certificate services are installed on the domain controller.
+
 
 
 ## License
