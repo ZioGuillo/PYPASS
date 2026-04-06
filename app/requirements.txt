@@ -2,5 +2,6 @@ Flask==3.0.3
 Flask-WTF==1.2.1
 jsondatabase==0.1.7
 ldap3==2.9.1
+python-dotenv==1.0.1
 slack_sdk==3.29.0
 WTForms==3.1.2

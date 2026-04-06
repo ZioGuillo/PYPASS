@@ -1,28 +1,20 @@
 #!/usr/bin/python3
 # import class and constants
-import json
 import ssl
-from pathlib import Path
 
 from jsondb import Database
 from ldap3 import Tls, NTLM, Connection, Server, SUBTREE, MODIFY_REPLACE
 from slack_sdk import WebClient
+from settings import BASE_DIR, load_settings
 
-# ===============
+variables = load_settings()
 
-base_dir = Path(__file__).resolve().parent
-config_path = base_dir / "src" / "config.json"
-with config_path.open("r", encoding="utf-8") as config_file:
-    variables = json.load(config_file)
-
-# ===============
-
-SLACK_BOT_TOKEN = variables['SLACK_BOT_TOKEN']          #
-slack_db = str(base_dir / "src" / variables["slack_db"])               # slack db users
+SLACK_BOT_TOKEN = str(variables.get('SLACK_BOT_TOKEN', '')).strip()
+slack_db = str(BASE_DIR / "src" / variables.get("slack_db", "slack_db.json"))
 
 db = Database(slack_db)
 
-sc = WebClient(token=SLACK_BOT_TOKEN)
+sc = WebClient(token=SLACK_BOT_TOKEN) if SLACK_BOT_TOKEN else None
 
 # ===============
 
@@ -163,7 +155,7 @@ def reset_passwd(domain, user_admin, passwd_admin, basedn, username, current, ne
 
             print(x)
             # Slack Notification for the user
-            if enable:
+            if enable and sc is not None:
                 x = search_slack_id(email)
 
                 result = sc.chat_postMessage(

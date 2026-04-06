@@ -28,6 +28,7 @@ PyPass is a simple self-service password change web app for Active Directory. It
 ```bash
 python3.12 -m venv .venv
 .venv/bin/pip install -r app/requirements.txt
+cp .env.example .env
 PYTHONPATH=app .venv/bin/flask --app app run --host 0.0.0.0 --port 5001
 ```
 
@@ -35,26 +36,39 @@ Open http://127.0.0.1:5001
 
 ## Configuration
 
-All settings live in [app/src/config.json](app/src/config.json). Edit the values to match your AD environment.
+The app loads defaults from [app/src/config.json](app/src/config.json), then overrides them from environment variables or a local `.env` file. Keep secrets out of git and set them via `.env` locally or deployment/GitHub secrets in hosted environments.
 
 ```json
 {
-  "SECRET_KEY_FLASK": "werewtrwetewrwer53535353",
-  "SLACK_BOT_TOKEN": "xoxb-",
+  "SECRET_KEY_FLASK": "",
+  "SLACK_BOT_TOKEN": "",
   "domain": "domain.com",
   "BASEDN": "OU=Users,dc=domain,dc=com",
   "user_admin": "admin-user",
-  "passwd_admin": "password_admin",
+  "passwd_admin": "",
   "slack_db": "slack_db.json",
   "Slack_Activation": "False",
   "debug": "True",
   "company": "DIGITALEBRAIN",
-  "RECAPTCHA_PUBLIC_KEY": "GOOGLE CODE",
-  "RECAPTCHA_PRIVATE_KEY": "GOOGLE CODE",
+  "RECAPTCHA_PUBLIC_KEY": "",
+  "RECAPTCHA_PRIVATE_KEY": "",
   "CRT_CERTIFICATE": "name.crt",
   "KEY_CERTIFICATE": "name.key"
 }
 ```
+
+Example local `.env`:
+
+```dotenv
+SECRET_KEY_FLASK=replace-with-flask-secret
+SLACK_BOT_TOKEN=xoxb-your-token
+passwd_admin=replace-with-ad-service-password
+RECAPTCHA_PUBLIC_KEY=replace-with-site-key
+RECAPTCHA_PRIVATE_KEY=replace-with-secret-key
+KEY_CERTIFICATE=/absolute/path/to/tls.key
+```
+
+For GitHub Actions or other secret stores, export the same variable names into the runtime environment. TLS assets can be provided either as file paths with `CRT_CERTIFICATE` and `KEY_CERTIFICATE`, or as inline PEM secrets with `CRT_CERTIFICATE_PEM` and `KEY_CERTIFICATE_PEM`.
 
 ### Generate a Flask secret key
 
@@ -74,7 +88,7 @@ The UI shows a green/red indicator based on `/health/ldap`, which attempts a TCP
 PyPass uses Google reCAPTCHA via Flask-WTF.
 
 1. Create keys at https://www.google.com/recaptcha/admin/create
-2. Use the site key and secret key in [app/src/config.json](app/src/config.json):
+2. Set `RECAPTCHA_PUBLIC_KEY` and `RECAPTCHA_PRIVATE_KEY` in `.env` or your deployment environment:
 
 ```json
 "RECAPTCHA_PUBLIC_KEY": "YOUR_SITE_KEY",
@@ -136,6 +150,8 @@ data = json.dumps(response.data, indent=4, sort_keys=True)
 print(data)
 ```
 
+Set `SLACK_BOT_TOKEN` in `.env` or your deployment environment before running this script.
+
 ```bash
 python3.12 slack_file.py >> app/src/slack_db.json
 ```
@@ -144,7 +160,7 @@ python3.12 slack_file.py >> app/src/slack_db.json
 
 ```bash
 docker build -t pypass:latest .
-docker run --dns <dns-or-ad-ip> --name pypass -d -p 80:5000 --rm pypass:latest
+docker run --dns <dns-or-ad-ip> --env-file .env --name pypass -d -p 80:5000 --rm pypass:latest
 ```
 
 ## Kubernetes (example)
@@ -194,6 +210,8 @@ spec:
 ```
 
 Create a ConfigMap named `pypass-config` with your `config.json` before applying the manifest.
+
+For secrets, use Kubernetes Secrets or your platform's secret store and expose them as environment variables with the same names shown in `.env.example`.
 
 ## Troubleshooting
 
