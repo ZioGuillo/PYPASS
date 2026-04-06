@@ -32,7 +32,6 @@ cp .env.example .env
 PYTHONPATH=app .venv/bin/flask --app app run --host 0.0.0.0 --port 5001
 ```
 
-
 [Open http://127.0.0.1:5001](http://127.0.0.1:5001)
 
 
@@ -44,30 +43,24 @@ Set these variables in your `.env` file (for local/dev) or as GitHub/CI/CD secre
 ```dotenv
 # Flask secret key (required)
 SECRET_KEY_FLASK=replace-with-flask-secret
-
 # LDAP/Active Directory connection
 DOMAIN=your-ldap-server.example.com
 BASEDN=OU=Users,DC=example,DC=com
 USER_ADMIN=your-ldap-service-account
 PASSWD_ADMIN=your-ldap-service-password
-
 # Slack integration (optional)
 SLACK_BOT_TOKEN=xoxb-your-token
 SLACK_ACTIVATION=True
-
 # Google reCAPTCHA (optional but recommended)
 RECAPTCHA_PUBLIC_KEY=your-recaptcha-site-key
 RECAPTCHA_PRIVATE_KEY=your-recaptcha-secret-key
 RECAPTCHA_ENABLED=True
-
 # TLS/SSL certificates (required for HTTPS)
 CRT_CERTIFICATE=app/src/name.crt
 KEY_CERTIFICATE=app/src/name.key
-
 # App/company info (optional)
 COMPANY=YourCompanyName
 DEBUG=True
-
 ```
 
 
@@ -76,12 +69,14 @@ DEBUG=True
 
 Add the same variables as repository or environment secrets. All sensitive values (passwords, tokens, keys) must be set as secrets, not in code or config files.
 
+
 **TLS assets:**
 - You can provide certificate/key as file paths (`CRT_CERTIFICATE`, `KEY_CERTIFICATE`) or as inline PEM values (`CRT_CERTIFICATE_PEM`, `KEY_CERTIFICATE_PEM`).
 
 
 
 ### Generate a Flask secret key
+
 
 ```bash
 python3.12 - <<'PY'
@@ -106,13 +101,11 @@ PyPass uses Google reCAPTCHA via Flask-WTF.
 
 2. Set `RECAPTCHA_PUBLIC_KEY` and `RECAPTCHA_PRIVATE_KEY` in `.env` or your deployment environment:
 
-
 ```dotenv
 RECAPTCHA_PUBLIC_KEY=YOUR_SITE_KEY
 RECAPTCHA_PRIVATE_KEY=YOUR_SECRET_KEY
 RECAPTCHA_ENABLED=True
 ```
-
 
 If you want to disable reCAPTCHA, set `RECAPTCHA_ENABLED` to `False`.
 
@@ -143,6 +136,7 @@ To enable LDAP/LDAPS connectivity from any LDAP server, confirm the items below:
 5. **Connectivity tests (optional)**
    - Test TLS handshake:
 
+
      ```bash
      openssl s_client -connect ldap.example.com:636
      ```
@@ -167,6 +161,7 @@ To enable Slack notifications:
 2. Export your Slack user list and save it in `app/src/`:
 
 
+
 ```python
 import json
 from slack_sdk import WebClient
@@ -182,6 +177,7 @@ print(data)
 
 
 Set `SLACK_BOT_TOKEN` in `.env` or your deployment environment before running this script.
+
 
 ```bash
 python3.12 slack_file.py >> app/src/slack_db.json
@@ -199,6 +195,7 @@ docker run --dns <dns-or-ad-ip> --env-file .env --name pypass -d -p 80:5000 --rm
 
 
 ## Kubernetes (Example)
+
 
 
 ```yaml
