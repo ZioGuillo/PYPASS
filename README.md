@@ -36,39 +36,45 @@ Open http://127.0.0.1:5001
 
 ## Configuration
 
-The app loads defaults from [app/src/config.json](app/src/config.json), then overrides them from environment variables or a local `.env` file. Keep secrets out of git and set them via `.env` locally or deployment/GitHub secrets in hosted environments.
 
-```json
-{
-  "SECRET_KEY_FLASK": "",
-  "SLACK_BOT_TOKEN": "",
-  "domain": "domain.com",
-  "BASEDN": "OU=Users,dc=domain,dc=com",
-  "user_admin": "admin-user",
-  "passwd_admin": "",
-  "slack_db": "slack_db.json",
-  "Slack_Activation": "False",
-  "debug": "True",
-  "company": "DIGITALEBRAIN",
-  "RECAPTCHA_PUBLIC_KEY": "",
-  "RECAPTCHA_PRIVATE_KEY": "",
-  "CRT_CERTIFICATE": "name.crt",
-  "KEY_CERTIFICATE": "name.key"
-}
-```
+**Configuration: Required Environment Variables**
 
-Example local `.env`:
+Set these variables in your `.env` file (for local/dev) or as GitHub/CI/CD secrets (for production):
 
 ```dotenv
+# Flask secret key (required)
 SECRET_KEY_FLASK=replace-with-flask-secret
+
+# LDAP/Active Directory connection
+DOMAIN=your-ldap-server.example.com
+BASEDN=OU=Users,DC=example,DC=com
+USER_ADMIN=your-ldap-service-account
+PASSWD_ADMIN=your-ldap-service-password
+
+# Slack integration (optional)
 SLACK_BOT_TOKEN=xoxb-your-token
-passwd_admin=replace-with-ad-service-password
-RECAPTCHA_PUBLIC_KEY=replace-with-site-key
-RECAPTCHA_PRIVATE_KEY=replace-with-secret-key
-KEY_CERTIFICATE=/absolute/path/to/tls.key
+SLACK_ACTIVATION=True
+
+# Google reCAPTCHA (optional but recommended)
+RECAPTCHA_PUBLIC_KEY=your-recaptcha-site-key
+RECAPTCHA_PRIVATE_KEY=your-recaptcha-secret-key
+RECAPTCHA_ENABLED=True
+
+# TLS/SSL certificates (required for HTTPS)
+CRT_CERTIFICATE=app/src/name.crt
+KEY_CERTIFICATE=app/src/name.key
+
+# App/company info (optional)
+COMPANY=YourCompanyName
+DEBUG=True
 ```
 
-For GitHub Actions or other secret stores, export the same variable names into the runtime environment. TLS assets can be provided either as file paths with `CRT_CERTIFICATE` and `KEY_CERTIFICATE`, or as inline PEM secrets with `CRT_CERTIFICATE_PEM` and `KEY_CERTIFICATE_PEM`.
+**For GitHub Actions or other CI/CD:**
+
+Add the same variables as repository or environment secrets. All sensitive values (passwords, tokens, keys) must be set as secrets, not in code or config files.
+
+**TLS assets:**
+- You can provide certificate/key as file paths (`CRT_CERTIFICATE`, `KEY_CERTIFICATE`) or as inline PEM values (`CRT_CERTIFICATE_PEM`, `KEY_CERTIFICATE_PEM`).
 
 ### Generate a Flask secret key
 
@@ -88,12 +94,13 @@ The UI shows a green/red indicator based on `/health/ldap`, which attempts a TCP
 PyPass uses Google reCAPTCHA via Flask-WTF.
 
 1. Create keys at https://www.google.com/recaptcha/admin/create
+
 2. Set `RECAPTCHA_PUBLIC_KEY` and `RECAPTCHA_PRIVATE_KEY` in `.env` or your deployment environment:
 
-```json
-"RECAPTCHA_PUBLIC_KEY": "YOUR_SITE_KEY",
-"RECAPTCHA_PRIVATE_KEY": "YOUR_SECRET_KEY",
-"RECAPTCHA_ENABLED": "True"
+```dotenv
+RECAPTCHA_PUBLIC_KEY=YOUR_SITE_KEY
+RECAPTCHA_PRIVATE_KEY=YOUR_SECRET_KEY
+RECAPTCHA_ENABLED=True
 ```
 
 If you want to disable reCAPTCHA, set `RECAPTCHA_ENABLED` to `False`.
@@ -115,10 +122,10 @@ To enable LDAP/LDAPS connectivity from any LDAP server, confirm the items below:
   - Create an LDAP user/service account with permission to read user attributes and change passwords.
   - In Active Directory, the account must be allowed to reset passwords for the target OU.
 
-4. **Config values**
-  - `domain`: LDAP hostname or IP (e.g., `ldap.example.com`)
+4. **Environment variables**
+  - `DOMAIN`: LDAP hostname or IP (e.g., `ldap.example.com`)
   - `BASEDN`: Base DN for users (e.g., `OU=Users,DC=example,DC=com`)
-  - `user_admin` / `passwd_admin`: service account credentials
+  - `USER_ADMIN` / `PASSWD_ADMIN`: service account credentials
 
 5. **Connectivity tests (optional)**
   - Test TLS handshake:
@@ -134,9 +141,10 @@ If LDAP is unreachable, the app will still render and show a warning message, an
 
 ### Slack setup
 
+
 To enable Slack notifications:
 
-1. Set `SLACK_BOT_TOKEN` and `Slack_Activation` to `True` in the config.
+1. Set `SLACK_BOT_TOKEN` and `SLACK_ACTIVATION=True` in your `.env` or deployment environment.
 2. Export your Slack user list and save it in `app/src/`:
 
 ```python
@@ -149,6 +157,7 @@ response = sc.users_list()
 data = json.dumps(response.data, indent=4, sort_keys=True)
 print(data)
 ```
+
 
 Set `SLACK_BOT_TOKEN` in `.env` or your deployment environment before running this script.
 
